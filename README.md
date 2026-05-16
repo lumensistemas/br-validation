@@ -5,7 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/lumensistemas/br-validation.svg)](https://packagist.org/packages/lumensistemas/br-validation)
 
 Validators, generators, and formatters for Brazilian
-identifiers (CPF, CNPJ, and NF-e access key) in PHP.
+identifiers (CPF, CNPJ, PIS, and NF-e access key) in PHP.
 Framework-agnostic and dependency-free at runtime.
 
 ## Requirements
@@ -54,6 +54,27 @@ Cnpj::normalize(' 11.222.333/0001-81 '); // '11222333000181'
 Cnpj::generateNumeric();      // a valid 14-digit numeric CNPJ
 Cnpj::generateAlphanumeric(); // a valid alphanumeric CNPJ
 ```
+
+### PIS / PASEP / NIS / NIT
+
+```php
+use LumenSistemas\BrValidation\Pis;
+
+Pis::isValid('120.65328.70-5'); // true
+Pis::isValid('12065328705');    // true (raw form also accepted)
+Pis::isValid('00000000000');    // false (all-equal sequence)
+Pis::isValid(12065328705);      // false (non-string input)
+
+Pis::format('12065328705');     // '120.65328.70-5'
+Pis::normalize('120.65328.70-5'); // '12065328705'
+
+Pis::generate(); // a valid 11-digit PIS
+```
+
+The same 11-digit number is issued under four different
+government program names — PIS, PASEP, NIS, NIT — and
+shares a single mod-11 check digit. `Pis` validates any of
+them.
 
 ### NF-e access key (chave de acesso)
 
