@@ -71,6 +71,8 @@ final class Pix
      * start with `+`), then email (must contain `@`), then CPF
      * and CNPJ. The five shapes are mutually exclusive, so the
      * order matters only for short-circuit efficiency.
+     *
+     * @return self::TYPE_*|null
      */
     public static function type(mixed $value): ?string
     {
@@ -135,7 +137,7 @@ final class Pix
             self::TYPE_CNPJ => Cnpj::normalize($trimmed),
             self::TYPE_EMAIL, self::TYPE_EVP => mb_strtolower($trimmed),
             self::TYPE_PHONE => $trimmed,
-            default => $trimmed,
+            null => $trimmed,
         };
     }
 
