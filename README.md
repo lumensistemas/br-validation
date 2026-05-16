@@ -6,9 +6,9 @@
 
 Validators, generators, and formatters for Brazilian
 identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH,
-Renavam, placa de veículo, CNS, chave PIX, CEP, and NF-e
-access key) in PHP. Framework-agnostic and dependency-free
-at runtime.
+Renavam, placa de veículo, CNS, chave PIX, CEP, telefone,
+and NF-e access key) in PHP. Framework-agnostic and
+dependency-free at runtime.
 
 ## Requirements
 
@@ -242,6 +242,34 @@ requires a Correios lookup and is out of scope. All-equal
 sequences like `00000000` therefore pass; callers that
 need existence checks should integrate a lookup service
 separately.
+
+### Telefone
+
+```php
+use LumenSistemas\BrValidation\Telefone;
+
+Telefone::isValid('(11) 98765-4321');  // true (mobile)
+Telefone::isValid('11987654321');      // true (mobile, raw)
+Telefone::isValid('(11) 3333-4444');   // true (landline)
+Telefone::isValid('+5511987654321');   // true (E.164)
+Telefone::isValid('11187654321');      // false (mobile must start with 9)
+
+Telefone::format('11987654321');       // '(11) 98765-4321'
+Telefone::format('1133334444');        // '(11) 3333-4444'
+Telefone::formatE164('11987654321');   // '+5511987654321'
+Telefone::normalize('+5511987654321'); // '11987654321'
+
+Telefone::generateMobile();    // a valid 11-digit mobile
+Telefone::generateLandline();  // a valid 10-digit landline
+```
+
+Enforces the post-2017 ANATEL mobile-9 mandate: 11-digit
+numbers must have a `9` as the first subscriber digit;
+10-digit landlines must not. DDD is checked against the
+`11..99` range with no `0` in either position; semantic
+DDD allocation (which DDDs are actually issued by ANATEL)
+is left to callers, since the allocation list shifts over
+time.
 
 ### NF-e access key (chave de acesso)
 
