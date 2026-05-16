@@ -6,7 +6,7 @@
 
 Validators, generators, and formatters for Brazilian
 identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH,
-Renavam, placa de veículo, CNS, chave PIX, and NF-e
+Renavam, placa de veículo, CNS, chave PIX, CEP, and NF-e
 access key) in PHP. Framework-agnostic and dependency-free
 at runtime.
 
@@ -220,6 +220,28 @@ validators. No `format()` method is exposed because the
 canonical display form depends on the type — use the
 type-specific `Cpf::format()` / `Cnpj::format()` when
 you need user-facing display.
+
+### CEP
+
+```php
+use LumenSistemas\BrValidation\Cep;
+
+Cep::isValid('01310-100');     // true
+Cep::isValid('01310100');      // true (raw form also accepted)
+Cep::isValid('0131010');       // false (too short)
+
+Cep::format('01310100');       // '01310-100'
+Cep::normalize('01310-100');   // '01310100'
+
+Cep::generate(); // a shape-valid 8-digit CEP (not guaranteed to exist)
+```
+
+CEP has no check digit — this is shape validation only.
+Whether a given CEP corresponds to a real address
+requires a Correios lookup and is out of scope. All-equal
+sequences like `00000000` therefore pass; callers that
+need existence checks should integrate a lookup service
+separately.
 
 ### NF-e access key (chave de acesso)
 
