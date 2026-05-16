@@ -35,7 +35,7 @@
     "scripts": {
         "lint": "vendor/bin/lens fix",
         "test": "vendor/bin/pest",
-        "test:coverage": "vendor/bin/pest --coverage --min=90"
+        "test:coverage": "vendor/bin/pest -p --coverage --min=90"
     },
     "config": {
         "allow-plugins": {
