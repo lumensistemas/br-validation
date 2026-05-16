@@ -63,7 +63,7 @@ final class Cns
         }
 
         $first = $raw[0];
-        if ($first !== '1' && $first !== '2' && $first !== '7' && $first !== '8' && $first !== '9') {
+        if (!in_array($first, ['1', '2', '7', '8', '9'], true)) {
             return false;
         }
 

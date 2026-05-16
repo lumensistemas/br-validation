@@ -94,7 +94,7 @@ final class Boleto
         $withoutDv = $bank.$currency.$factor.$value.$freeField;
         $generalDv = self::mod11($withoutDv);
 
-        $barcode = $bank.$currency.((string) $generalDv).$factor.$value.$freeField;
+        $barcode = $bank.$currency.($generalDv).$factor.$value.$freeField;
 
         return self::barcodeToLinhaDigitavel($barcode);
     }
@@ -191,9 +191,9 @@ final class Boleto
         $f2Source = mb_substr($barcode, 24, 10);
         $f3Source = mb_substr($barcode, 34, 10);
 
-        return $f1Source.((string) self::mod10($f1Source))
-            .$f2Source.((string) self::mod10($f2Source))
-            .$f3Source.((string) self::mod10($f3Source))
+        return $f1Source.(self::mod10($f1Source))
+            .$f2Source.(self::mod10($f2Source))
+            .$f3Source.(self::mod10($f3Source))
             .$barcode[4]
             .mb_substr($barcode, 5, 14);
     }
