@@ -5,9 +5,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/lumensistemas/br-validation.svg)](https://packagist.org/packages/lumensistemas/br-validation)
 
 Validators, generators, and formatters for Brazilian
-identifiers (CPF, CNPJ, PIS, Título de Eleitor, and NF-e
-access key) in PHP. Framework-agnostic and dependency-free
-at runtime.
+identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH, and
+NF-e access key) in PHP. Framework-agnostic and
+dependency-free at runtime.
 
 ## Requirements
 
@@ -98,6 +98,27 @@ The UF code in positions 9–10 is the TSE's own numbering
 Minas Gerais (`02`) follow a special rule: whenever a
 check-digit calculation yields remainder 0, the digit is
 bumped to 1.
+
+### CNH
+
+```php
+use LumenSistemas\BrValidation\Cnh;
+
+Cnh::isValid('98765432109');     // true
+Cnh::isValid('123.456.789-00');  // true (mask characters are stripped)
+Cnh::isValid('12345678901');     // false (wrong check digits)
+Cnh::isValid('11111111111');     // false (all-equal sequence)
+
+Cnh::format('123.456.789-00');   // '12345678900'
+Cnh::normalize(' 12345678900 '); // '12345678900'
+
+Cnh::generate(); // a valid 11-digit CNH
+```
+
+The CNH número de registro has no canonical visual mask
+on the document, so `format()` returns the same 11-digit
+raw form as `normalize()` for any 11-digit input. The
+class exists primarily for `isValid()` and `generate()`.
 
 ### NF-e access key (chave de acesso)
 

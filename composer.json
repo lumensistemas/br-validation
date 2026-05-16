@@ -1,9 +1,9 @@
 {
     "name": "lumensistemas/br-validation",
-    "description": "Validators, generators, and formatters for Brazilian identifiers (CPF, CNPJ, PIS, Título de Eleitor, and NF-e access key).",
+    "description": "Validators, generators, and formatters for Brazilian identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH, and NF-e access key).",
     "type": "library",
     "license": "MIT",
-    "keywords": ["brazilian", "validation", "cpf", "cnpj", "pis", "pasep", "nis", "nit", "titulo-eleitor", "tse", "nfe", "danfe", "validator", "br"],
+    "keywords": ["brazilian", "validation", "cpf", "cnpj", "pis", "pasep", "nis", "nit", "titulo-eleitor", "tse", "cnh", "detran", "nfe", "danfe", "validator", "br"],
     "authors": [
         {
             "name": "Lumen Sistemas",
