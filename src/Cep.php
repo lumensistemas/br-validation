@@ -22,14 +22,16 @@ namespace LumenSistemas\BrValidation;
  */
 final class Cep
 {
-    private const string MASK_PATTERN = '#[\s.-]#';
+    private const string MASK_PATTERN = '#[\s-]#';
 
     /**
      * Checks whether the value is a syntactically valid CEP.
      *
      * Accepts raw 8-digit input or canonical masked form
-     * (`XXXXX-XXX`); whitespace, periods, and hyphens are
-     * stripped before checking.
+     * (`XXXXX-XXX`); whitespace and hyphens are stripped
+     * before checking. Dots are not stripped: no CEP convention
+     * uses them, so accepting `123.45-678` would silently swallow
+     * data-entry mistakes.
      *
      * Accepts any input type — non-string values return false
      * rather than raising, so callers can pass user input or
@@ -82,7 +84,7 @@ final class Cep
 
     /**
      * Normalizes a CEP to its canonical raw form: strips mask
-     * characters (whitespace, `.`, `-`), leaving digits only.
+     * characters (whitespace and `-`), leaving digits only.
      *
      * Public for callers that need to canonicalize a value
      * before storage or comparison without paying for a full
