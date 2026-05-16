@@ -135,7 +135,7 @@ final class Pix
             self::TYPE_CNPJ => Cnpj::normalize($trimmed),
             self::TYPE_EMAIL, self::TYPE_EVP => mb_strtolower($trimmed),
             self::TYPE_PHONE => $trimmed,
-            null => $trimmed,
+            default => $trimmed,
         };
     }
 
