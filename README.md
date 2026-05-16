@@ -5,8 +5,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/lumensistemas/br-validation.svg)](https://packagist.org/packages/lumensistemas/br-validation)
 
 Validators, generators, and formatters for Brazilian
-identifiers (CPF, CNPJ, PIS, and NF-e access key) in PHP.
-Framework-agnostic and dependency-free at runtime.
+identifiers (CPF, CNPJ, PIS, Título de Eleitor, and NF-e
+access key) in PHP. Framework-agnostic and dependency-free
+at runtime.
 
 ## Requirements
 
@@ -75,6 +76,28 @@ The same 11-digit number is issued under four different
 government program names — PIS, PASEP, NIS, NIT — and
 shares a single mod-11 check digit. `Pis` validates any of
 them.
+
+### Título de Eleitor
+
+```php
+use LumenSistemas\BrValidation\TituloEleitor;
+
+TituloEleitor::isValid('1234 5678 0396'); // true (RJ)
+TituloEleitor::isValid('123456780396');   // true (raw form also accepted)
+TituloEleitor::isValid('123456789905');   // false (UF 99 is not a TSE code)
+TituloEleitor::isValid('111111111111');   // false (all-equal sequence)
+
+TituloEleitor::format('123456780396');    // '1234 5678 0396'
+TituloEleitor::normalize('1234 5678 0396'); // '123456780396'
+
+TituloEleitor::generate(); // a valid 12-digit título
+```
+
+The UF code in positions 9–10 is the TSE's own numbering
+(`01..28`), not the IBGE UF code. São Paulo (`01`) and
+Minas Gerais (`02`) follow a special rule: whenever a
+check-digit calculation yields remainder 0, the digit is
+bumped to 1.
 
 ### NF-e access key (chave de acesso)
 
