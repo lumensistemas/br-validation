@@ -24,7 +24,7 @@ namespace LumenSistemas\BrValidation;
  * list shifts over time and is better handled by a separate
  * lookup table.
  */
-final class Telefone
+final class Phone
 {
     private const string MASK_PATTERN = '#[^\d+]#';
 
@@ -184,6 +184,6 @@ final class Telefone
 
     private static function randomDdd(): string
     {
-        return ((string) random_int(1, 9)).((string) random_int(1, 9));
+        return random_int(1, 9).(random_int(1, 9));
     }
 }

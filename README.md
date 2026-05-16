@@ -243,24 +243,24 @@ sequences like `00000000` therefore pass; callers that
 need existence checks should integrate a lookup service
 separately.
 
-### Telefone
+### Phone
 
 ```php
-use LumenSistemas\BrValidation\Telefone;
+use LumenSistemas\BrValidation\Phone;
 
-Telefone::isValid('(11) 98765-4321');  // true (mobile)
-Telefone::isValid('11987654321');      // true (mobile, raw)
-Telefone::isValid('(11) 3333-4444');   // true (landline)
-Telefone::isValid('+5511987654321');   // true (E.164)
-Telefone::isValid('11187654321');      // false (mobile must start with 9)
+Phone::isValid('(11) 98765-4321');  // true (mobile)
+Phone::isValid('11987654321');      // true (mobile, raw)
+Phone::isValid('(11) 3333-4444');   // true (landline)
+Phone::isValid('+5511987654321');   // true (E.164)
+Phone::isValid('11187654321');      // false (mobile must start with 9)
 
-Telefone::format('11987654321');       // '(11) 98765-4321'
-Telefone::format('1133334444');        // '(11) 3333-4444'
-Telefone::formatE164('11987654321');   // '+5511987654321'
-Telefone::normalize('+5511987654321'); // '11987654321'
+Phone::format('11987654321');       // '(11) 98765-4321'
+Phone::format('1133334444');        // '(11) 3333-4444'
+Phone::formatE164('11987654321');   // '+5511987654321'
+Phone::normalize('+5511987654321'); // '11987654321'
 
-Telefone::generateMobile();    // a valid 11-digit mobile
-Telefone::generateLandline();  // a valid 10-digit landline
+Phone::generateMobile();    // a valid 11-digit mobile
+Phone::generateLandline();  // a valid 10-digit landline
 ```
 
 Enforces the post-2017 ANATEL mobile-9 mandate: 11-digit
