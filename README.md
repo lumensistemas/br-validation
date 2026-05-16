@@ -6,8 +6,9 @@
 
 Validators, generators, and formatters for Brazilian
 identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH,
-Renavam, placa de veículo, CNS, and NF-e access key) in
-PHP. Framework-agnostic and dependency-free at runtime.
+Renavam, placa de veículo, CNS, chave PIX, and NF-e
+access key) in PHP. Framework-agnostic and dependency-free
+at runtime.
 
 ## Requirements
 
@@ -190,6 +191,35 @@ no internal structure. The validator enforces the
 appendix pattern for definitive cards so that
 arithmetically-conforming numbers the SUS would never
 issue are still rejected.
+
+### Chave PIX
+
+```php
+use LumenSistemas\BrValidation\Pix;
+
+Pix::isValid('85698104077');                              // true (CPF key)
+Pix::isValid('user@example.com');                         // true (email key)
+Pix::isValid('+5511987654321');                           // true (phone key)
+Pix::isValid('123e4567-e89b-42d3-a456-426614174000');     // true (EVP key)
+Pix::isValid('11.222.333/0001-81');                       // true (CNPJ key)
+Pix::isValid('not-a-key');                                // false
+
+Pix::type('user@example.com');                            // 'email'
+Pix::type('85698104077');                                 // 'cpf'
+
+Pix::normalize('Test.User@Example.COM');                  // 'test.user@example.com'
+Pix::normalize('856.981.040-77');                         // '85698104077'
+
+Pix::generateEvp(); // a valid UUID v4 EVP key
+```
+
+`Pix` is a thin dispatcher over the five chave PIX shapes
+(CPF, CNPJ, e-mail, E.164 phone starting with `+55`, and
+UUID v4 EVP); CPF and CNPJ delegate to the existing
+validators. No `format()` method is exposed because the
+canonical display form depends on the type — use the
+type-specific `Cpf::format()` / `Cnpj::format()` when
+you need user-facing display.
 
 ### NF-e access key (chave de acesso)
 
