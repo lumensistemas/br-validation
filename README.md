@@ -6,8 +6,8 @@
 
 Validators, generators, and formatters for Brazilian
 identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH,
-Renavam, and NF-e access key) in PHP. Framework-agnostic
-and dependency-free at runtime.
+Renavam, placa de veículo, and NF-e access key) in PHP.
+Framework-agnostic and dependency-free at runtime.
 
 ## Requirements
 
@@ -140,6 +140,30 @@ Like CNH, Renavam has no canonical visual mask, so
 `format()` returns the same 11-digit raw form as
 `normalize()`. Pre-2007 nine-digit Renavams must be
 left-padded with zeros by the caller before validation.
+
+### Placa de veículo
+
+```php
+use LumenSistemas\BrValidation\Placa;
+
+Placa::isValid('ABC-1234'); // true (old format)
+Placa::isValid('abc1234');  // true (case-insensitive)
+Placa::isValid('ABC1D23');  // true (Mercosul format)
+Placa::isValid('ABCD123');  // false (wrong shape)
+
+Placa::format('ABC1234');   // 'ABC-1234'
+Placa::format('abc1d23');   // 'ABC1D23'
+Placa::normalize(' abc-1234 '); // 'ABC1234'
+
+Placa::generateOld();       // a valid old-format placa
+Placa::generateMercosul();  // a valid Mercosul placa
+```
+
+Old and Mercosul plates coexist on the road indefinitely
+(vehicles only switch to Mercosul on first registration
+or transfer), so this is an accept-both library, not a
+transitional one. Placas carry no check digit; only the
+shape is validated.
 
 ### NF-e access key (chave de acesso)
 
