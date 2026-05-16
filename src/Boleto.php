@@ -85,16 +85,25 @@ final class Boleto
      */
     public static function generate(): string
     {
-        $bank = self::randomDigits(3);
+        $digits = static function (int $count): string {
+            $out = '';
+            for ($i = 0; $i < $count; ++$i) {
+                $out .= (string) random_int(0, 9);
+            }
+
+            return $out;
+        };
+
+        $bank = $digits(3);
         $currency = '9';
-        $factor = self::randomDigits(4);
-        $value = self::randomDigits(10);
-        $freeField = self::randomDigits(25);
+        $factor = $digits(4);
+        $value = $digits(10);
+        $freeField = $digits(25);
 
         $withoutDv = $bank.$currency.$factor.$value.$freeField;
         $generalDv = self::mod11($withoutDv);
 
-        $barcode = $bank.$currency.($generalDv).$factor.$value.$freeField;
+        $barcode = $bank.$currency.$generalDv.$factor.$value.$freeField;
 
         return self::barcodeToLinhaDigitavel($barcode);
     }
@@ -226,15 +235,5 @@ final class Boleto
         $dv = 11 - ($sum % 11);
 
         return $dv >= 10 ? 1 : $dv;
-    }
-
-    private static function randomDigits(int $count): string
-    {
-        $out = '';
-        for ($i = 0; $i < $count; ++$i) {
-            $out .= (string) random_int(0, 9);
-        }
-
-        return $out;
     }
 }
