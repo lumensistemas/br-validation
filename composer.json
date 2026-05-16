@@ -1,0 +1,48 @@
+{
+    "name": "lumensistemas/br-validation",
+    "description": "Validators, generators, and formatters for Brazilian identifiers (CPF, CNPJ, and NF-e access key).",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["brazilian", "validation", "cpf", "cnpj", "nfe", "danfe", "validator", "br"],
+    "authors": [
+        {
+            "name": "Lumen Sistemas",
+            "homepage": "https://github.com/lumensistemas"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/lumensistemas/br-validation/issues",
+        "source": "https://github.com/lumensistemas/br-validation"
+    },
+    "require": {
+        "php": "^8.3",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "lumensistemas/lens": "^1.0",
+        "pestphp/pest": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "LumenSistemas\\BrValidation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LumenSistemas\\BrValidation\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "lint": "vendor/bin/lens fix",
+        "test": "vendor/bin/pest",
+        "test:coverage": "vendor/bin/pest --coverage --min=90"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
