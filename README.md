@@ -325,11 +325,16 @@ not constrain modelo.
   type and returns `false` for non-string or malformed
   values. Callers can pass user input directly without
   `try/catch`.
-- **All-equal sequences are rejected** (`11111111111`,
-  `00000000000000`, …) even though they pass the mod-11
-  algorithm. They are conventional placeholder values
-  across the Brazilian validation ecosystem and never
-  represent real identifiers.
+- **All-equal sequences are rejected** by validators with
+  a checksum (`11111111111`, `00000000000000`, …) even
+  though some pass the underlying mod-11 algorithm — they
+  are conventional placeholder values across the Brazilian
+  validation ecosystem and never represent real
+  identifiers. `Cep` and `Placa` are exceptions: neither
+  carries a checksum to reject them against, so any
+  shape-valid input is accepted and existence checks are
+  left to the caller (Correios lookup for CEP, DETRAN for
+  placa).
 - **CNPJ is case-insensitive.** Letters in alphanumeric
   CNPJs are normalized to uppercase before validation and
   formatting; both `'12abc34501de35'` and
