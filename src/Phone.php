@@ -184,6 +184,6 @@ final class Phone
 
     private static function randomDdd(): string
     {
-        return random_int(1, 9).(random_int(1, 9));
+        return random_int(1, 9).random_int(1, 9);
     }
 }
