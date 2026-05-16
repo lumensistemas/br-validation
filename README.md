@@ -5,9 +5,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/lumensistemas/br-validation.svg)](https://packagist.org/packages/lumensistemas/br-validation)
 
 Validators, generators, and formatters for Brazilian
-identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH, and
-NF-e access key) in PHP. Framework-agnostic and
-dependency-free at runtime.
+identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH,
+Renavam, and NF-e access key) in PHP. Framework-agnostic
+and dependency-free at runtime.
 
 ## Requirements
 
@@ -119,6 +119,27 @@ The CNH número de registro has no canonical visual mask
 on the document, so `format()` returns the same 11-digit
 raw form as `normalize()` for any 11-digit input. The
 class exists primarily for `isValid()` and `generate()`.
+
+### Renavam
+
+```php
+use LumenSistemas\BrValidation\Renavam;
+
+Renavam::isValid('01234567897');     // true
+Renavam::isValid('98765432103');     // true
+Renavam::isValid('00000000000');     // false (all-equal sequence)
+Renavam::isValid(1234567897);        // false (non-string input)
+
+Renavam::format('01234567897');      // '01234567897'
+Renavam::normalize(' 01234567897 '); // '01234567897'
+
+Renavam::generate(); // a valid 11-digit Renavam
+```
+
+Like CNH, Renavam has no canonical visual mask, so
+`format()` returns the same 11-digit raw form as
+`normalize()`. Pre-2007 nine-digit Renavams must be
+left-padded with zeros by the caller before validation.
 
 ### NF-e access key (chave de acesso)
 
