@@ -7,8 +7,8 @@
 Validators, generators, and formatters for Brazilian
 identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH,
 Renavam, placa de veículo, CNS, chave PIX, CEP, telefone,
-and NF-e access key) in PHP. Framework-agnostic and
-dependency-free at runtime.
+boleto bancário, and NF-e access key) in PHP.
+Framework-agnostic and dependency-free at runtime.
 
 ## Requirements
 
@@ -270,6 +270,33 @@ numbers must have a `9` as the first subscriber digit;
 DDD allocation (which DDDs are actually issued by ANATEL)
 is left to callers, since the allocation list shifts over
 time.
+
+### Boleto bancário
+
+```php
+use LumenSistemas\BrValidation\Boleto;
+
+Boleto::isValid('00190.12343 56789.012343 56789.012343 1 99990000010000'); // true (linha digitável)
+Boleto::isValid('00190123435678901234356789012343199990000010000');       // true (raw)
+Boleto::isValid('00191999900000100000123456789012345678901234');          // true (44-digit barcode)
+Boleto::isValid('00191123435678901234356789012343199990000010000');       // false (wrong field-1 DV)
+
+Boleto::format('00190123435678901234356789012343199990000010000');
+// '00190.12343 56789.012343 56789.012343 1 99990000010000'
+
+Boleto::normalize('00190.12343 56789.012343 56789.012343 1 99990000010000');
+// '00190123435678901234356789012343199990000010000'
+
+Boleto::generate(); // a valid 47-digit linha digitável
+```
+
+`Boleto::isValid` accepts either the 47-digit linha
+digitável or the 44-digit código de barras and dispatches
+by length. A linha digitável is valid iff all three of its
+mod-10 field DVs match AND the barcode it reconstructs to
+passes the mod-11 general DV check. Targets boletos
+bancários only; concessionária slips (48-digit utility
+shape) are out of scope.
 
 ### NF-e access key (chave de acesso)
 

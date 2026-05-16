@@ -1,9 +1,9 @@
 {
     "name": "lumensistemas/br-validation",
-    "description": "Validators, generators, and formatters for Brazilian identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH, Renavam, placa de veículo, CNS, chave PIX, CEP, telefone, and NF-e access key).",
+    "description": "Validators, generators, and formatters for Brazilian identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH, Renavam, placa de veículo, CNS, chave PIX, CEP, telefone, boleto bancário, and NF-e access key).",
     "type": "library",
     "license": "MIT",
-    "keywords": ["brazilian", "validation", "cpf", "cnpj", "pis", "pasep", "nis", "nit", "titulo-eleitor", "tse", "cnh", "detran", "renavam", "placa", "mercosul", "cns", "sus", "pix", "bacen", "cep", "correios", "telefone", "phone", "anatel", "nfe", "danfe", "validator", "br"],
+    "keywords": ["brazilian", "validation", "cpf", "cnpj", "pis", "pasep", "nis", "nit", "titulo-eleitor", "tse", "cnh", "detran", "renavam", "placa", "mercosul", "cns", "sus", "pix", "bacen", "cep", "correios", "telefone", "phone", "anatel", "boleto", "febraban", "nfe", "danfe", "validator", "br"],
     "authors": [
         {
             "name": "Lumen Sistemas",
