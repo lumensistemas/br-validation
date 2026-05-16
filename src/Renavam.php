@@ -6,7 +6,7 @@ namespace LumenSistemas\BrValidation;
 
 /**
  * Renavam (Registro Nacional de Veículos Automotores)
- * validator, generator, and formatter.
+ * validator and generator.
  *
  * The 11-digit vehicle registration number uses a single mod-11
  * check digit. The algorithm is the standard one: reverse the
@@ -17,10 +17,11 @@ namespace LumenSistemas\BrValidation;
  * "multiply sum by 10, mod 11, clamp 10 to 0" form found in
  * Detran documentation.
  *
- * Format note: Renavam has no canonical visual mask; it is
- * printed as 11 bare digits on the CRLV. {@see self::format()}
- * therefore returns the normalized raw form rather than
- * inventing a separator scheme.
+ * No `format()` method is exposed: Renavam has no canonical
+ * visual mask — it is printed as 11 bare digits on the CRLV —
+ * so a format method would either fabricate a separator scheme
+ * or be an alias for {@see self::normalize()}. Use `normalize()`
+ * for the canonical 11-digit storage/display form.
  */
 final class Renavam
 {
@@ -83,31 +84,6 @@ final class Renavam
         } while (preg_match('/^(\d)\1{9}$/', $base) === 1);
 
         return $base.self::calculateVerificationDigit($base);
-    }
-
-    /**
-     * Returns the canonical raw form of a Renavam: the 11 bare
-     * digits with mask characters stripped.
-     *
-     * Renavam has no canonical visual mask, so the output of
-     * this method equals {@see self::normalize()} for any
-     * 11-digit input. The method exists for API symmetry with
-     * the rest of the library.
-     *
-     * Tolerant: when the payload is not 11 digits after stripping
-     * mask characters, the input is returned unchanged rather
-     * than raising. Does not validate the check digit — that is
-     * {@see self::isValid()}'s job.
-     */
-    public static function format(string $value): string
-    {
-        $raw = self::normalize($value);
-
-        if (preg_match('/^\d{11}$/', $raw) !== 1) {
-            return $value;
-        }
-
-        return $raw;
     }
 
     /**

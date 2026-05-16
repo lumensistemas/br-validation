@@ -105,21 +105,19 @@ bumped to 1.
 ```php
 use LumenSistemas\BrValidation\Cnh;
 
-Cnh::isValid('98765432109');     // true
-Cnh::isValid('123.456.789-00');  // true (mask characters are stripped)
-Cnh::isValid('12345678901');     // false (wrong check digits)
-Cnh::isValid('11111111111');     // false (all-equal sequence)
+Cnh::isValid('98765432109');         // true
+Cnh::isValid('123.456.789-00');      // true (mask characters are stripped)
+Cnh::isValid('12345678901');         // false (wrong check digits)
+Cnh::isValid('11111111111');         // false (all-equal sequence)
 
-Cnh::format('123.456.789-00');   // '12345678900'
-Cnh::normalize(' 12345678900 '); // '12345678900'
+Cnh::normalize(' 123.456.789-00 ');  // '12345678900'
 
 Cnh::generate(); // a valid 11-digit CNH
 ```
 
 The CNH número de registro has no canonical visual mask
-on the document, so `format()` returns the same 11-digit
-raw form as `normalize()` for any 11-digit input. The
-class exists primarily for `isValid()` and `generate()`.
+on the document, so no `format()` method is exposed — call
+`normalize()` for the 11-digit storage/display form.
 
 ### Renavam
 
@@ -131,16 +129,16 @@ Renavam::isValid('98765432103');     // true
 Renavam::isValid('00000000000');     // false (all-equal sequence)
 Renavam::isValid(1234567897);        // false (non-string input)
 
-Renavam::format('01234567897');      // '01234567897'
 Renavam::normalize(' 01234567897 '); // '01234567897'
 
 Renavam::generate(); // a valid 11-digit Renavam
 ```
 
-Like CNH, Renavam has no canonical visual mask, so
-`format()` returns the same 11-digit raw form as
-`normalize()`. Pre-2007 nine-digit Renavams must be
-left-padded with zeros by the caller before validation.
+Like CNH, Renavam has no canonical visual mask on the
+CRLV, so no `format()` method is exposed — call
+`normalize()` for the 11-digit storage/display form.
+Pre-2007 nine-digit Renavams must be left-padded with
+zeros by the caller before validation.
 
 ### Placa de veículo
 

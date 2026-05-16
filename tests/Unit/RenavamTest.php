@@ -51,21 +51,6 @@ describe('Renavam::generate', function (): void {
     });
 });
 
-describe('Renavam::format', function (): void {
-    it('returns the raw 11-digit form', function (): void {
-        expect(Renavam::format('01234567897'))->toBe('01234567897');
-    });
-
-    it('strips mask characters before returning the raw form', function (): void {
-        expect(Renavam::format(' 0123456789-7 '))->toBe('01234567897');
-    });
-
-    it('returns input unchanged when payload is not 11 digits', function (): void {
-        expect(Renavam::format('123'))->toBe('123');
-        expect(Renavam::format('abc'))->toBe('abc');
-    });
-});
-
 describe('Renavam::normalize', function (): void {
     it('removes mask characters', function (): void {
         expect(Renavam::normalize('012.345.678.9-7'))->toBe('01234567897');

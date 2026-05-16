@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace LumenSistemas\BrValidation;
 
 /**
- * CNH (Carteira Nacional de Habilitação) validator, generator,
- * and formatter.
+ * CNH (Carteira Nacional de Habilitação) validator and
+ * generator.
  *
  * The 11-digit driver's license number (número de registro) uses
  * two mod-11 check digits with a quirk unique to CNH: when the
@@ -15,10 +15,12 @@ namespace LumenSistemas\BrValidation;
  * with mod-11 wrap-around if the result goes negative. This
  * `dsc` rule does not appear in CPF, CNPJ, or PIS.
  *
- * Format note: the CNH número de registro has no canonical
- * visual mask; it is printed as bare 11 digits on the document.
- * {@see self::format()} therefore returns the normalized raw
- * form rather than inventing a separator scheme.
+ * No `format()` method is exposed: the CNH número de registro
+ * has no canonical visual mask — it is printed as bare 11 digits
+ * on the document — so a format method would either fabricate a
+ * separator scheme or be an alias for {@see self::normalize()}.
+ * Use `normalize()` for the canonical 11-digit storage/display
+ * form.
  */
 final class Cnh
 {
@@ -85,32 +87,6 @@ final class Cnh
         $dv2 = self::calculateSecondVerificationDigit($partial, $dsc);
 
         return $partial.$dv2;
-    }
-
-    /**
-     * Returns the canonical raw form of a CNH número de registro:
-     * the 11 bare digits with mask characters stripped.
-     *
-     * CNH has no canonical visual mask, so the output of this
-     * method equals {@see self::normalize()} for any 11-digit
-     * input. The method exists for API symmetry with the rest of
-     * the library; callers may use it as the documented
-     * "displayable form" entry point.
-     *
-     * Tolerant: when the payload is not 11 digits after stripping
-     * mask characters, the input is returned unchanged rather
-     * than raising. Does not validate check digits — that is
-     * {@see self::isValid()}'s job.
-     */
-    public static function format(string $value): string
-    {
-        $raw = self::normalize($value);
-
-        if (preg_match('/^\d{11}$/', $raw) !== 1) {
-            return $value;
-        }
-
-        return $raw;
     }
 
     /**

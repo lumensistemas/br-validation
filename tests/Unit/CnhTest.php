@@ -53,27 +53,6 @@ describe('Cnh::generate', function (): void {
     });
 });
 
-describe('Cnh::format', function (): void {
-    it('returns the raw 11-digit form', function (): void {
-        expect(Cnh::format('12345678900'))->toBe('12345678900');
-    });
-
-    it('strips mask characters before returning the raw form', function (): void {
-        expect(Cnh::format(' 123 456 789 00 '))->toBe('12345678900');
-        expect(Cnh::format('123-456-789-00'))->toBe('12345678900');
-    });
-
-    it('returns input unchanged when payload is not 11 digits', function (): void {
-        expect(Cnh::format('123'))->toBe('123');
-        expect(Cnh::format('abc'))->toBe('abc');
-        expect(Cnh::format('1234567890A'))->toBe('1234567890A');
-    });
-
-    it('does not validate check digits — returns raw for any shape-valid input', function (): void {
-        expect(Cnh::format('12345678901'))->toBe('12345678901');
-    });
-});
-
 describe('Cnh::normalize', function (): void {
     it('removes whitespace', function (): void {
         expect(Cnh::normalize(' 12345678900 '))->toBe('12345678900');
