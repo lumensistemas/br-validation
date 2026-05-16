@@ -6,8 +6,8 @@
 
 Validators, generators, and formatters for Brazilian
 identifiers (CPF, CNPJ, PIS, Título de Eleitor, CNH,
-Renavam, placa de veículo, and NF-e access key) in PHP.
-Framework-agnostic and dependency-free at runtime.
+Renavam, placa de veículo, CNS, and NF-e access key) in
+PHP. Framework-agnostic and dependency-free at runtime.
 
 ## Requirements
 
@@ -164,6 +164,32 @@ Old and Mercosul plates coexist on the road indefinitely
 or transfer), so this is an accept-both library, not a
 transitional one. Placas carry no check digit; only the
 shape is validated.
+
+### CNS (Cartão Nacional de Saúde)
+
+```php
+use LumenSistemas\BrValidation\Cns;
+
+Cns::isValid('120 6532 8705 0007'); // true (definitive)
+Cns::isValid('900000000000008');    // true (provisional, starts with 9)
+Cns::isValid('320653287050007');    // false (first digit must be 1, 2, 7, 8, or 9)
+Cns::isValid('100000000060026');    // false (definitive with non-000/001 appendix)
+
+Cns::format('120653287050007');     // '120 6532 8705 0007'
+Cns::normalize('120 6532 8705 0007'); // '120653287050007'
+
+Cns::generateDefinitive();   // a valid definitive CNS (first digit 1 or 2)
+Cns::generateProvisional();  // a valid provisional CNS (first digit 7, 8, or 9)
+```
+
+Two structural shapes share one mod-11 check: definitive
+cards (first digit 1 or 2) carry the citizen's PIS in
+positions 1–11 and a `000`/`001` appendix in positions
+12–14; provisional cards (first digit 7, 8, or 9) carry
+no internal structure. The validator enforces the
+appendix pattern for definitive cards so that
+arithmetically-conforming numbers the SUS would never
+issue are still rejected.
 
 ### NF-e access key (chave de acesso)
 
