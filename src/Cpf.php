@@ -6,6 +6,21 @@ namespace LumenSistemas\BrValidation;
 
 /**
  * CPF validator, generator, and formatter.
+ *
+ * The 11-digit Brazilian individual taxpayer identifier (Cadastro
+ * de Pessoas Físicas) issued by the Receita Federal. Encodes a
+ * 9-digit sequential base followed by two mod-11 check digits;
+ * the first check digit is computed over the base with weights
+ * `10..2`, the second over the base + first DV with weights
+ * `11..2`. Both DV calculations reduce remainders below 2 to 0,
+ * matching the canonical Receita Federal algorithm.
+ *
+ * All-equal-digit sequences (`11111111111`, `22222222222`, …)
+ * pass the mod-11 check yet are universally treated as
+ * placeholder values across the Brazilian validation ecosystem;
+ * {@see self::isValid()} rejects them to match that convention.
+ *
+ * @see https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/cpf
  */
 final class Cpf
 {
