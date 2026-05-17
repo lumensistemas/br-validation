@@ -24,6 +24,7 @@ describe('Cep::isValid', function (): void {
         'too long' => ['013101000'],
         'contains letter' => ['0131010A'],
         'non-string integer' => [1310100],
+        'non-string array' => [['value']],
         'empty string' => [''],
     ]);
 

@@ -29,6 +29,7 @@ describe('Cnh::isValid', function (): void {
         'too long' => ['123456789000'],
         'contains letter' => ['1234567890A'],
         'non-string integer' => [12345678900],
+        'non-string array' => [['value']],
         'empty string' => [''],
     ]);
 

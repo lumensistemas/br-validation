@@ -35,6 +35,7 @@ describe('Phone::isValid', function (): void {
         'empty string' => [''],
         'letters only' => ['abcdefghijk'],
         'non-string integer' => [11987654321],
+        'non-string array' => [['value']],
     ]);
 
     it('accepts a generated mobile', function (): void {

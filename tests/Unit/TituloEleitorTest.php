@@ -32,6 +32,7 @@ describe('TituloEleitor::isValid', function (): void {
         'too long' => ['1234567803960'],
         'contains letter' => ['12345678039A'],
         'non-string integer' => [123456780396],
+        'non-string array' => [['value']],
         'empty string' => [''],
         'masked all equal' => ['1111 1111 1111'],
         'SP without special bump' => ['100000010106'],

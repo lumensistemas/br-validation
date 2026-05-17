@@ -26,6 +26,7 @@ describe('Nfe::isValid', function (): void {
         'too long' => ['352401112223330001815500100000000111234567880'],
         'contains letter' => ['3524011122233300018155001000000001112345678A'],
         'non-string integer' => [35240111222333000181550010000000011123456788],
+        'non-string array' => [['value']],
         'empty string' => [''],
     ]);
 

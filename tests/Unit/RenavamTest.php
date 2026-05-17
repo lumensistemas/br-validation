@@ -26,6 +26,7 @@ describe('Renavam::isValid', function (): void {
         'too long' => ['012345678970'],
         'contains letter' => ['0123456789A'],
         'non-string integer' => [1234567897],
+        'non-string array' => [['value']],
         'empty string' => [''],
         'all zeros' => ['00000000000'],
     ]);

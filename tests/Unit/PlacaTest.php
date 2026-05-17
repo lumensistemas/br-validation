@@ -31,6 +31,7 @@ describe('Placa::isValid', function (): void {
         'mercosul-ish with letter at pos 4 wrong' => ['ABCA1D23'],
         'special character' => ['ABC@1234'],
         'non-string integer' => [1231234],
+        'non-string array' => [['value']],
         'empty string' => [''],
     ]);
 

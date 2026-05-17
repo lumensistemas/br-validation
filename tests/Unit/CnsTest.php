@@ -32,6 +32,7 @@ describe('Cns::isValid', function (): void {
         'too long' => ['1206532870500070'],
         'contains letter' => ['12065328705000A'],
         'non-string integer' => [120653287050007],
+        'non-string array' => [['value']],
         'empty string' => [''],
     ]);
 

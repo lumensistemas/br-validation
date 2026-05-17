@@ -31,6 +31,7 @@ describe('Cnpj::isValid', function (): void {
         'too short' => ['1122233300018'],
         'too long' => ['112223330001811'],
         'non-string integer' => [11222333000181],
+        'non-string array' => [['value']],
         'empty string' => [''],
         'letters only' => ['abcdefghijklmn'],
     ]);

@@ -26,6 +26,7 @@ describe('Pis::isValid', function (): void {
         'too long' => ['120653287050'],
         'letters' => ['abcdefghijk'],
         'non-string integer' => [12065328705],
+        'non-string array' => [['value']],
         'empty string' => [''],
         'masked all equal' => ['000.00000.00-0'],
     ]);

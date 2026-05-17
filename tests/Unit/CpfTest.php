@@ -31,6 +31,7 @@ describe('Cpf::isValid', function (): void {
         'wrong DV1 with coincidental DV2 match' => ['11144477700'],
         'letters' => ['abcdefghijk'],
         'non-string integer' => [12345678909],
+        'non-string array' => [['value']],
         'empty string' => [''],
         'masked all equal' => ['111.111.111-11'],
         'wrong second digit' => ['52998224726'],

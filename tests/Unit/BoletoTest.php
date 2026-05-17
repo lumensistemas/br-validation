@@ -28,6 +28,7 @@ describe('Boleto::isValid', function (): void {
         '45 digits' => ['001901234356789012343567890123431999900000100'],
         'contains letter' => ['00190123435678901234356789012343199990000010A00'],
         'non-string integer' => [12345],
+        'non-string array' => [['value']],
         'empty string' => [''],
     ]);
 
