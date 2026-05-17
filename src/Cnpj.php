@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LumenSistemas\BrValidation;
 
+use LumenSistemas\BrValidation\Concerns\Mod11;
+
 /**
  * CNPJ validator, generator, and formatter.
  *
@@ -68,11 +70,11 @@ final class Cnpj
             return false;
         }
 
-        if (self::calculateVerificationDigit($raw, self::FIRST_WEIGHTS) !== (int) $raw[12]) {
+        if (Mod11::dv($raw, self::FIRST_WEIGHTS) !== (int) $raw[12]) {
             return false;
         }
 
-        return self::calculateVerificationDigit($raw, self::SECOND_WEIGHTS) === (int) $raw[13];
+        return Mod11::dv($raw, self::SECOND_WEIGHTS) === (int) $raw[13];
     }
 
     /**
@@ -166,26 +168,11 @@ final class Cnpj
         return (string) preg_replace(self::MASK_PATTERN, '', mb_strtoupper($value));
     }
 
-    /**
-     * @param array<int, int> $weights
-     */
-    private static function calculateVerificationDigit(string $value, array $weights): int
-    {
-        $sum = 0;
-        foreach ($weights as $i => $weight) {
-            $sum += (ord($value[$i]) - 48) * $weight;
-        }
-
-        $remainder = $sum % 11;
-
-        return $remainder < 2 ? 0 : 11 - $remainder;
-    }
-
     private static function appendVerificationDigits(string $base): string
     {
-        $dv1 = self::calculateVerificationDigit($base, self::FIRST_WEIGHTS);
+        $dv1 = Mod11::dv($base, self::FIRST_WEIGHTS);
         $partial = $base.$dv1;
-        $dv2 = self::calculateVerificationDigit($partial, self::SECOND_WEIGHTS);
+        $dv2 = Mod11::dv($partial, self::SECOND_WEIGHTS);
 
         return $partial.$dv2;
     }

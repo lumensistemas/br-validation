@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LumenSistemas\BrValidation;
 
+use LumenSistemas\BrValidation\Concerns\Mod11;
+
 /**
  * Boleto bancário validator, generator, and formatter.
  *
@@ -227,12 +229,7 @@ final class Boleto
 
     private static function mod11(string $digits43): int
     {
-        $sum = 0;
-        foreach (self::MOD11_WEIGHTS as $i => $weight) {
-            $sum += (ord($digits43[$i]) - 48) * $weight;
-        }
-
-        $dv = 11 - ($sum % 11);
+        $dv = 11 - (Mod11::weightedSum($digits43, self::MOD11_WEIGHTS) % 11);
 
         return $dv >= 10 ? 1 : $dv;
     }

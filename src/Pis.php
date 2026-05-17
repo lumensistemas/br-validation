@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LumenSistemas\BrValidation;
 
+use LumenSistemas\BrValidation\Concerns\Mod11;
+
 /**
  * PIS validator, generator, and formatter.
  *
@@ -53,7 +55,7 @@ final class Pis
             return false;
         }
 
-        return self::calculateVerificationDigit($raw) === (int) $raw[10];
+        return Mod11::dv($raw, self::WEIGHTS) === (int) $raw[10];
     }
 
     /**
@@ -74,7 +76,7 @@ final class Pis
             }
         } while (preg_match('/^(\d)\1{9}$/', $base) === 1);
 
-        return $base.self::calculateVerificationDigit($base);
+        return $base.Mod11::dv($base, self::WEIGHTS);
     }
 
     /**
@@ -114,17 +116,5 @@ final class Pis
     public static function normalize(string $value): string
     {
         return (string) preg_replace(self::MASK_PATTERN, '', $value);
-    }
-
-    private static function calculateVerificationDigit(string $value): int
-    {
-        $sum = 0;
-        foreach (self::WEIGHTS as $i => $weight) {
-            $sum += (ord($value[$i]) - 48) * $weight;
-        }
-
-        $remainder = $sum % 11;
-
-        return $remainder < 2 ? 0 : 11 - $remainder;
     }
 }

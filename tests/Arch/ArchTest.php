@@ -15,4 +15,4 @@ arch('every public validator exposes isValid')
     ->expect('LumenSistemas\BrValidation')
     ->classes()
     ->toHaveMethod('isValid')
-    ->ignoring('LumenSistemas\BrValidation\Internal');
+    ->ignoring('LumenSistemas\BrValidation\Concerns');

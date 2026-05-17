@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LumenSistemas\BrValidation;
 
+use LumenSistemas\BrValidation\Concerns\Mod11;
+
 /**
  * Título de Eleitor validator, generator, and formatter.
  *
@@ -144,12 +146,7 @@ final class TituloEleitor
 
     private static function calculateFirstVerificationDigit(string $value, string $uf): int
     {
-        $sum = 0;
-        foreach (self::FIRST_WEIGHTS as $i => $weight) {
-            $sum += (ord($value[$i]) - 48) * $weight;
-        }
-
-        return self::reduceModEleven($sum, $uf);
+        return self::reduceModEleven(Mod11::weightedSum($value, self::FIRST_WEIGHTS), $uf);
     }
 
     private static function calculateSecondVerificationDigit(string $value, string $uf): int

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LumenSistemas\BrValidation;
 
+use LumenSistemas\BrValidation\Concerns\Mod11;
+
 /**
  * NF-e access key (chave de acesso) validator, generator, and
  * formatter.
@@ -68,7 +70,7 @@ final class Nfe
             return false;
         }
 
-        return self::calculateVerificationDigit($raw) === (int) $raw[43];
+        return Mod11::dv($raw, self::WEIGHTS) === (int) $raw[43];
     }
 
     /**
@@ -92,7 +94,7 @@ final class Nfe
             }
         } while (preg_match('/^(\d)\1{42}$/', $base) === 1);
 
-        return $base.self::calculateVerificationDigit($base);
+        return $base.Mod11::dv($base, self::WEIGHTS);
     }
 
     /**
@@ -128,17 +130,5 @@ final class Nfe
     public static function normalize(string $value): string
     {
         return (string) preg_replace(self::MASK_PATTERN, '', $value);
-    }
-
-    private static function calculateVerificationDigit(string $value): int
-    {
-        $sum = 0;
-        foreach (self::WEIGHTS as $i => $weight) {
-            $sum += (ord($value[$i]) - 48) * $weight;
-        }
-
-        $remainder = $sum % 11;
-
-        return $remainder < 2 ? 0 : 11 - $remainder;
     }
 }

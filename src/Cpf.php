@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LumenSistemas\BrValidation;
 
+use LumenSistemas\BrValidation\Concerns\Mod11;
+
 /**
  * CPF validator, generator, and formatter.
  *
@@ -64,11 +66,11 @@ final class Cpf
             return false;
         }
 
-        if (self::calculateVerificationDigit($raw, self::FIRST_WEIGHTS) !== (int) $raw[9]) {
+        if (Mod11::dv($raw, self::FIRST_WEIGHTS) !== (int) $raw[9]) {
             return false;
         }
 
-        return self::calculateVerificationDigit($raw, self::SECOND_WEIGHTS) === (int) $raw[10];
+        return Mod11::dv($raw, self::SECOND_WEIGHTS) === (int) $raw[10];
     }
 
     /**
@@ -89,9 +91,9 @@ final class Cpf
             }
         } while (preg_match('/^(\d)\1{8}$/', $base) === 1);
 
-        $dv1 = self::calculateVerificationDigit($base, self::FIRST_WEIGHTS);
+        $dv1 = Mod11::dv($base, self::FIRST_WEIGHTS);
         $partial = $base.$dv1;
-        $dv2 = self::calculateVerificationDigit($partial, self::SECOND_WEIGHTS);
+        $dv2 = Mod11::dv($partial, self::SECOND_WEIGHTS);
 
         return $partial.$dv2;
     }
@@ -133,20 +135,5 @@ final class Cpf
     public static function normalize(string $value): string
     {
         return (string) preg_replace(self::MASK_PATTERN, '', $value);
-    }
-
-    /**
-     * @param array<int, int> $weights
-     */
-    private static function calculateVerificationDigit(string $value, array $weights): int
-    {
-        $sum = 0;
-        foreach ($weights as $i => $weight) {
-            $sum += (ord($value[$i]) - 48) * $weight;
-        }
-
-        $remainder = $sum % 11;
-
-        return $remainder < 2 ? 0 : 11 - $remainder;
     }
 }

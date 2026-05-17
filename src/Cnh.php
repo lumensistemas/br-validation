@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LumenSistemas\BrValidation;
 
+use LumenSistemas\BrValidation\Concerns\Mod11;
+
 /**
  * CNH (Carteira Nacional de Habilitação) validator and
  * generator.
@@ -25,6 +27,12 @@ namespace LumenSistemas\BrValidation;
 final class Cnh
 {
     private const string MASK_PATTERN = '#[\s.-]#';
+
+    /** @var array<int, int> */
+    private const array FIRST_WEIGHTS = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+
+    /** @var array<int, int> */
+    private const array SECOND_WEIGHTS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     /**
      * Checks whether the value is a syntactically valid CNH
@@ -110,12 +118,7 @@ final class Cnh
      */
     private static function calculateFirstVerificationDigit(string $value): array
     {
-        $sum = 0;
-        for ($i = 0, $weight = 9; $i < 9; ++$i, --$weight) {
-            $sum += (ord($value[$i]) - 48) * $weight;
-        }
-
-        $dv1 = $sum % 11;
+        $dv1 = Mod11::weightedSum($value, self::FIRST_WEIGHTS) % 11;
         if ($dv1 >= 10) {
             return [0, 2];
         }
@@ -125,12 +128,7 @@ final class Cnh
 
     private static function calculateSecondVerificationDigit(string $value, int $dsc): int
     {
-        $sum = 0;
-        for ($i = 0, $weight = 1; $i < 9; ++$i, ++$weight) {
-            $sum += (ord($value[$i]) - 48) * $weight;
-        }
-
-        $remainder = $sum % 11;
+        $remainder = Mod11::weightedSum($value, self::SECOND_WEIGHTS) % 11;
         if ($remainder >= 10) {
             return 0;
         }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LumenSistemas\BrValidation;
 
+use LumenSistemas\BrValidation\Concerns\Mod11;
+
 /**
  * CNS (Cartão Nacional de Saúde) validator, generator, and
  * formatter.
@@ -30,6 +32,9 @@ namespace LumenSistemas\BrValidation;
 final class Cns
 {
     private const string MASK_PATTERN = '#[\s.-]#';
+
+    /** @var array<int, int> */
+    private const array WEIGHTS = [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
     /**
      * Checks whether the value is a syntactically valid CNS.
@@ -74,7 +79,7 @@ final class Cns
             }
         }
 
-        return self::weightedSum($raw) % 11 === 0;
+        return Mod11::weightedSum($raw, self::WEIGHTS) % 11 === 0;
     }
 
     /**
@@ -181,15 +186,5 @@ final class Cns
     public static function normalize(string $value): string
     {
         return (string) preg_replace(self::MASK_PATTERN, '', $value);
-    }
-
-    private static function weightedSum(string $value): int
-    {
-        $sum = 0;
-        for ($i = 0; $i < 15; ++$i) {
-            $sum += (ord($value[$i]) - 48) * (15 - $i);
-        }
-
-        return $sum;
     }
 }
