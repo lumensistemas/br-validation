@@ -33,7 +33,7 @@ use LumenSistemas\BrValidation\Concerns\Mod11;
  */
 final class Boleto
 {
-    private const string MASK_PATTERN = '#[\s.-]#';
+    private const string MASK_PATTERN = '#[\s.]#';
 
     /**
      * Mod-11 weights for the 43 barcode positions excluding the
@@ -54,9 +54,12 @@ final class Boleto
      * either linha digitável (47 digits) or barcode (44 digits)
      * form.
      *
-     * Accepts mask characters (whitespace, periods, hyphens),
-     * which are stripped before checking. Accepts any input
-     * type — non-string values return false rather than
+     * Accepts whitespace and periods (the only characters in
+     * the canonical linha digitável mask), which are stripped
+     * before checking. Hyphens are not stripped — they appear
+     * nowhere in the boleto display format and accepting them
+     * would silently swallow data-entry mistakes. Accepts any
+     * input type — non-string values return false rather than
      * raising.
      */
     public static function isValid(mixed $value): bool
@@ -146,7 +149,7 @@ final class Boleto
 
     /**
      * Normalizes a boleto to its canonical raw form: strips
-     * mask characters (whitespace, `.`, `-`), leaving digits
+     * mask characters (whitespace and `.`), leaving digits
      * only.
      */
     public static function normalize(string $value): string

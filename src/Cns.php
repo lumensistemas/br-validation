@@ -31,7 +31,7 @@ use LumenSistemas\BrValidation\Concerns\Mod11;
  */
 final class Cns
 {
-    private const string MASK_PATTERN = '#[\s.-]#';
+    private const string MASK_PATTERN = '#\s#';
 
     /** @var array<int, int> */
     private const array WEIGHTS = [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
@@ -40,8 +40,9 @@ final class Cns
      * Checks whether the value is a syntactically valid CNS.
      *
      * Accepts raw 15-digit input or canonical masked form
-     * (`XXX XXXX XXXX XXXX`); whitespace, periods, and hyphens
-     * are stripped before checking.
+     * (`XXX XXXX XXXX XXXX`); only whitespace is stripped — dots
+     * and hyphens are not in any SUS-canonical CNS format, so
+     * accepting them would silently swallow data-entry mistakes.
      *
      * Accepts any input type — non-string values return false
      * rather than raising, so callers can pass user input or
@@ -176,8 +177,8 @@ final class Cns
     }
 
     /**
-     * Normalizes a CNS to its canonical raw form: strips mask
-     * characters (whitespace, `.`, `-`), leaving digits only.
+     * Normalizes a CNS to its canonical raw form: strips
+     * whitespace, leaving digits only.
      *
      * Public for callers that need to canonicalize a value
      * before storage or comparison without paying for a full

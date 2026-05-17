@@ -18,7 +18,6 @@ describe('TituloEleitor::isValid', function (): void {
         'non-SP/MG remainder 0 -> DV 0' => ['100000010302'],
         'masked' => ['1234 5678 0396'],
         'masked with surrounding whitespace' => [' 1234 5678 0396 '],
-        'dotted' => ['1234.5678.0396'],
     ]);
 
     it('rejects invalid titles', function (mixed $value): void {
@@ -89,9 +88,9 @@ describe('TituloEleitor::normalize', function (): void {
         expect(TituloEleitor::normalize('1234 5678 0396'))->toBe('123456780396');
     });
 
-    it('removes dots and hyphens', function (): void {
-        expect(TituloEleitor::normalize('1234.5678.0396'))->toBe('123456780396');
-        expect(TituloEleitor::normalize('1234-5678-0396'))->toBe('123456780396');
+    it('does not strip dots or hyphens (not in canonical mask)', function (): void {
+        expect(TituloEleitor::normalize('1234.5678.0396'))->toBe('1234.5678.0396');
+        expect(TituloEleitor::normalize('1234-5678-0396'))->toBe('1234-5678-0396');
     });
 
     it('strips surrounding whitespace', function (): void {

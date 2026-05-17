@@ -101,8 +101,8 @@ describe('Cns::normalize', function (): void {
         expect(Cns::normalize('120 6532 8705 0007'))->toBe('120653287050007');
     });
 
-    it('removes dots and hyphens', function (): void {
-        expect(Cns::normalize('120.6532.8705.0007'))->toBe('120653287050007');
+    it('does not strip dots or hyphens (not in canonical mask)', function (): void {
+        expect(Cns::normalize('120.6532.8705.0007'))->toBe('120.6532.8705.0007');
     });
 
     it('strips surrounding whitespace', function (): void {

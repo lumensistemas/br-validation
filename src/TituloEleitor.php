@@ -23,7 +23,7 @@ use LumenSistemas\BrValidation\Concerns\Mod11;
  */
 final class TituloEleitor
 {
-    private const string MASK_PATTERN = '#[\s.-]#';
+    private const string MASK_PATTERN = '#\s#';
 
     /** @var array<int, int> */
     private const array FIRST_WEIGHTS = [2, 3, 4, 5, 6, 7, 8, 9];
@@ -41,8 +41,10 @@ final class TituloEleitor
      * Eleitor.
      *
      * Accepts raw 12-digit input or canonical masked form (three
-     * groups of four digits separated by spaces); whitespace,
-     * periods, and hyphens are stripped before checking.
+     * groups of four digits separated by spaces); only whitespace
+     * is stripped — dots and hyphens are not in any TSE-canonical
+     * Título format, so accepting them would silently swallow
+     * data-entry mistakes.
      *
      * Accepts any input type — non-string values return false
      * rather than raising, so callers can pass user input or
@@ -132,8 +134,7 @@ final class TituloEleitor
 
     /**
      * Normalizes a Título de Eleitor to its canonical raw form:
-     * strips mask characters (whitespace, `.`, `-`), leaving
-     * digits only.
+     * strips whitespace, leaving digits only.
      *
      * Public for callers that need to canonicalize a value
      * before storage or comparison without paying for a full
