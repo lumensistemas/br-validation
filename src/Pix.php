@@ -72,7 +72,7 @@ final class Pix
      * and CNPJ. The five shapes are mutually exclusive, so the
      * order matters only for short-circuit efficiency.
      *
-     * @return self::TYPE_*|null
+     * @return null|self::TYPE_*
      */
     public static function type(mixed $value): ?string
     {
